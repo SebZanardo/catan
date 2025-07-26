@@ -1,11 +1,9 @@
-#include "raylib.h"
-
+#include "core.h"
 
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
 #define WINDOW_CAPTION "catan"
 #define WINDOW_FPS 60
-
 
 int main(void) {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
@@ -26,6 +24,6 @@ int main(void) {
         EndDrawing();
     }
 
-    // Let OS deallocate after application is quit
+    // Let OS deallocate itself after application is quit
 }
 
