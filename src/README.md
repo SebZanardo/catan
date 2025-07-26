@@ -43,15 +43,11 @@ u8 placed_settlement_positions[MAX_PLAYER_SETTLEMENTS];
 u8 placed_city_positions[MAX_PLAYER_CITIES];
 ```
 
-Keep track of number of each card type for easy adding and removal
+Keep track of number of each card type for easy adding and removal and tracking
 ```c
 u8 resource_cards[RESOURCE_CARD_TYPE_COUNT];
-u8 development_cards[DEVELOPMENT_CARD_TYPE_COUNT];
-```
-
-Played knight cards need to be tracked after use
-```c
-u8 knights_played;
+u8 development_cards_held[DEVELOPMENT_CARD_TYPE_COUNT];
+u8 development_cards_played[DEVELOPMENT_CARD_TYPE_COUNT];
 ```
 
 ## Cards Representation

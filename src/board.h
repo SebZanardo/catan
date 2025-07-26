@@ -39,5 +39,9 @@ typedef struct {
 } Board;
 
 void board_setup(Board* board, GameType game_type);
+void board_place_road(Board* board, u8 edge_index, u8 player_index);
+void board_place_settlement(Board* board, u8 vertex_index, u8 player_index);
+void board_place_city(Board* board, u8 vertex_index, u8 player_index);
+void board_place_robber(Board* board, u8 tile_index, u8 player_index);
 
 #endif  /* BOARD_H */

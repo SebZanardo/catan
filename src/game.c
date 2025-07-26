@@ -3,9 +3,22 @@
 void game_start(Game* game, GameType game_type) {
     game->game_type = game_type;
 
+    game->player_turn = 0;
+
     for (int i = 0; i < game->player_count; i++) {
         player_setup(&game->players[i]);
-     }
+        game->player_order[i] = i;
+    }
+
+    // Shuffle turn order map
+    // Fair random in-place shuffle
+    // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+    for (u8 i = game->player_count - 1; i > 0; i--) {
+        u8 j = GetRandomValue(0, i);
+        u8 temp = game->player_order[i];
+        game->player_order[i] = game->player_order[j];
+        game->player_order[j] = temp;
+    }
 
     board_setup(&game->board, game_type);
     cards_setup(&game->cards, game_type);
@@ -45,4 +58,77 @@ bool game_setup_remove_player(Game* game, u8 index) {
     }
 
     return true;
+}
+
+bool game_valid_road(Game* game, u8 edge_index) {
+    u8 player_index = game->player_order[game->player_turn];
+    assert(player_index < game->player_count);
+    assert(edge_index < MAX_BOARD_EDGES);
+
+    // A road is valid if there is no road currently there
+    // You have an available road
+    // You have adequate resources
+    // You are building from one of your roads
+
+    return true;
+}
+
+bool game_valid_settlement(Game* game, u8 vertex_index) {
+    u8 player_index = game->player_order[game->player_turn];
+    assert(player_index < game->player_count);
+    assert(vertex_index < MAX_BOARD_VERTICES);
+
+    // A settlement is valid if you are placing on an empty square
+    // You have an available settlement
+    // You have adequate resources
+    // The settlement is build from your road
+    // The settlement is 2 away from all other settlements
+
+    return true;
+}
+
+bool game_valid_city(Game* game, u8 vertex_index) {
+    u8 player_index = game->player_order[game->player_turn];
+    assert(player_index < game->player_count);
+    assert(vertex_index < MAX_BOARD_VERTICES);
+
+    // A city is valid if you are placing ontop of one of your settlements
+    // You have an available city
+    // You have adequate resources
+
+    return true;
+}
+
+bool game_valid_development_Card(Game* game) {
+    u8 player_index = game->player_order[game->player_turn];
+    assert(player_index < game->player_count);
+
+    // Check that there are cards to buy
+    // Check that player has resources
+
+    return true;
+}
+
+void game_build_road(Game* game, u8 edge_index) {
+    u8 player_index = game->player_order[game->player_turn];
+    board_place_road(&game->board, edge_index, player_index);
+    player_build_road(&game->players[player_index], edge_index);
+}
+
+void game_build_settlement(Game* game, u8 vertex_index) {
+    u8 player_index = game->player_order[game->player_turn];
+    board_place_settlement(&game->board, vertex_index, player_index);
+    player_build_settlement(&game->players[player_index], vertex_index);
+}
+
+void game_build_city(Game* game, u8 vertex_index) {
+    u8 player_index = game->player_order[game->player_turn];
+    board_place_city(&game->board, vertex_index, player_index);
+    player_build_city(&game->players[player_index], vertex_index);
+}
+
+void game_build_development_card(Game* game) {
+    u8 player_index = game->player_order[game->player_turn];
+    DevelopmentCard card = card_draw_development_card(&game->cards);
+    player_build_development_card(&game->players[player_index], card);
 }
