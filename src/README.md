@@ -1,5 +1,25 @@
 # Technical Details
 
+## Game Representation
+`NOTE: The current Game representation is subject to change`
+
+Gametype can be `REGULAR` (2-4 players) or `EXPANSION` (5-6 players)
+```c
+GameType game_type;
+```
+
+Store board and cards
+```c
+Board board;
+Cards cards;
+```
+
+Store players in order as they join. If someone leaves then shift list down
+```c
+Player players[MAX_PLAYERS];
+u8 player_count;
+```
+
 ## Player Representation
 Every player stores their name and player colour
 ```c
@@ -29,7 +49,7 @@ u8 resource_cards[RESOURCE_CARD_TYPE_COUNT];
 u8 development_cards[DEVELOPMENT_CARD_TYPE_COUNT];
 ```
 
-Played knight cards are the development card that needs to be tracked after use
+Played knight cards need to be tracked after use
 ```c
 u8 knights_played;
 ```
@@ -68,7 +88,7 @@ u8 robber_moved_by;  // Store what player moved the robber last
 
 ## \[REGULAR] (2-4 players)
 ### Edge Index Mapping
-```c
+```sh
                ---       ---       ---
             000   001 002   003 004   005
            |         |         |         |
@@ -95,7 +115,7 @@ u8 robber_moved_by;  // Store what player moved the robber last
 ```
 
 ### Vertex Index Mapping
-```c
+```sh
                000       001       002
              --   --   --   --   --   --
           003       004       005       006
@@ -122,7 +142,7 @@ u8 robber_moved_by;  // Store what player moved the robber last
 ```
 
 ### Terrain Index Mapping
-```c
+```sh
                ---       ---       ---
              --   --   --   --   --   --
            |         |         |         |
@@ -149,7 +169,7 @@ u8 robber_moved_by;  // Store what player moved the robber last
 ```
 
 ### Port Index Mapping
-```c
+```sh
                -x-       -x-       ---
             000   --   --   001  --   --
            x         |         x         |
@@ -177,7 +197,7 @@ u8 robber_moved_by;  // Store what player moved the robber last
 
 ## \[EXPANSION] (5-6 players)
 ### Edge Index Mapping
-```c
+```sh
                     ---       ---       ---
                  000   001 002   003 004   005
                 |         |         |         |
@@ -212,7 +232,7 @@ u8 robber_moved_by;  // Store what player moved the robber last
 ```
 
 ### Vertex Index Mapping
-```c
+```sh
                     000       001       002
                   --   --   --   --   --   --
                003       004       005       006
@@ -247,7 +267,7 @@ u8 robber_moved_by;  // Store what player moved the robber last
 ```
 
 ### Terrain Index Mapping
-```c
+```sh
                     ---       ---       ---
                   --   --   --   --   --   --
                 |         |         |         |
@@ -282,7 +302,7 @@ u8 robber_moved_by;  // Store what player moved the robber last
 ```
 
 ### Port Index Mapping
-```c
+```sh
                     -x-       -x-       ---
                  000   --   --   001  --   --
                 x         |         x         |
