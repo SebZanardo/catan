@@ -50,6 +50,10 @@ void cards_setup(Cards* cards, GameType game_type) {
     }
 }
 
+DevelopmentCard card_draw_development_card(Cards* cards) {
+    return cards->development_cards[--cards->development_card_count];
+}
+
 // Fair random in-place shuffle
 // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 void cards_random_shuffle(Cards* cards) {

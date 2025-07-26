@@ -31,17 +31,22 @@ typedef struct {
 	u8 placed_city_positions[MAX_PLAYER_CITIES];
 
 	u8 resource_cards[RESOURCE_CARD_TYPE_COUNT];
-	u8 development_cards[DEVELOPMENT_CARD_TYPE_COUNT];
+	u8 development_cards_held[DEVELOPMENT_CARD_TYPE_COUNT];
+	u8 development_cards_played[DEVELOPMENT_CARD_TYPE_COUNT];
 
 	u8 placed_roads;
 	u8 placed_settlements;
 	u8 placed_cities;
 
-	u8 knights_played;
-
 	PlayerColour colour;
 } Player;
 
 void player_setup(Player* player);
+void player_build_road(Player* player, u8 edge_index);
+void player_build_settlement(Player* player, u8 vertex_index);
+void player_build_city(Player* player, u8 vertex_index);
+void player_build_development_card(Player* player, DevelopmentCard card);
+
+void player_spend_development_card(Player* player, DevelopmentCard card);
 
 #endif  /* PLAYER_H */
