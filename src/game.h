@@ -6,17 +6,16 @@
 #include "cards.h"
 #include "player.h"
 
-typedef enum {
-	REGULAR,    // 2-4 players
-	EXPANSION,  // 5-6 players
-} GameType;
-
 typedef struct {
 	Board board;
 	Cards cards;
-	Player players[6];
+	Player players[MAX_PLAYERS];
 	u8 player_count;
 	GameType game_type;
-} GameState;
+} Game;
+
+void game_start(Game* game, GameType game_type);
+bool game_setup_add_player(Game* game, PlayerColour colour, char name[16]);
+bool game_setup_remove_player(Game* game, u8 index);
 
 #endif  /* GAME_H */

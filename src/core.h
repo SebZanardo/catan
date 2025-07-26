@@ -22,4 +22,12 @@ typedef uint64_t u64;
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 
+#define MAX_PLAYERS 6
+
+typedef enum {
+	GAME_NONE,
+	GAME_REGULAR,    // 2-4 players
+	GAME_EXPANSION,  // 5-6 players
+} GameType;
+
 #endif  /* CORE_H */

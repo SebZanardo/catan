@@ -1,4 +1,4 @@
-#include "core.h"
+#include "game.h"
 
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
@@ -18,12 +18,14 @@ int main(void) {
     Image icon = LoadImage("src/data/textures/icon.png");
     SetWindowIcon(icon);
 
+    Game game = {0};
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
         EndDrawing();
     }
 
-    // Let OS deallocate itself after application is quit
+    // Let OS deallocate program memory itself after application is quit
 }
 
