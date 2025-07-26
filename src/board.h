@@ -29,9 +29,11 @@ typedef enum {
 typedef struct {
 	u8 edges[MAX_BOARD_EDGES];
 	u8 vertices[MAX_BOARD_VERTICES];
+
 	TerrainHex hexes[MAX_BOARD_HEXES];
-	u8 hex_values[MAX_BOARD_HEXES];
+	u8 hex_values[MAX_BOARD_HEXES];  // Dice roll needed to collect
 	Port ports[MAX_BOARD_PORTS];
+
 	u8 robber_position;
 	u8 robber_moved_by;  // Store what player moved the robber last
 } Board;

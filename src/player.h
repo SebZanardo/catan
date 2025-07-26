@@ -21,8 +21,13 @@ typedef enum {
 typedef struct {
 	char name[MAX_PLAYER_NAME_LENGTH];
 
+	// u8 for roads will correspond to board->edges index
 	u8 placed_road_positions[MAX_PLAYER_ROADS];
+
+	// u8 for settlements will correspond to board->vertices index
 	u8 placed_settlement_positions[MAX_PLAYER_SETTLEMENTS];
+
+	// u8 for cities will correspond to board->vertices index
 	u8 placed_city_positions[MAX_PLAYER_CITIES];
 
 	u8 resource_cards[RESOURCE_CARD_TYPE_COUNT];
@@ -31,6 +36,7 @@ typedef struct {
 	u8 placed_roads;
 	u8 placed_settlements;
 	u8 placed_cities;
+
 	u8 knights_played;
 
 	PlayerColour colour;
