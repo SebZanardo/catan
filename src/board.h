@@ -9,7 +9,6 @@
 #define MAX_BOARD_PORTS 11
 
 typedef enum {
-	TERRAIN_NONE,
 	TERRAIN_HILL,
 	TERRAIN_FOREST,
 	TERRAIN_PASTURE,
@@ -19,13 +18,12 @@ typedef enum {
 } TerrainHex;
 
 typedef enum {
-	PORT_NONE,
 	PORT_THREE,
-	PORT_TWO_BRICK,
-	PORT_TWO_WOOD,
-	PORT_TWO_WOOL,
-	PORT_TWO_WHEAT,
-	PORT_TWO_ORE,
+	PORT_BRICK,
+	PORT_WOOD,
+	PORT_WOOL,
+	PORT_WHEAT,
+	PORT_ORE,
 } Port;
 
 typedef struct {

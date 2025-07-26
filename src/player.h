@@ -10,7 +10,6 @@
 #define MAX_PLAYER_CITIES 4
 
 typedef enum {
-	PLAYER_BLANK,
 	PLAYER_RED,
 	PLAYER_ORANGE,
 	PLAYER_YELLOW,
@@ -24,8 +23,8 @@ typedef struct {
 
 	u8 placed_road_positions[MAX_PLAYER_ROADS];
 	u8 placed_settlement_positions[MAX_PLAYER_SETTLEMENTS];
-
 	u8 placed_city_positions[MAX_PLAYER_CITIES];
+
 	u8 resource_cards[RESOURCE_CARD_TYPE_COUNT];
 	u8 development_cards[DEVELOPMENT_CARD_TYPE_COUNT];
 

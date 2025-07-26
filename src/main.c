@@ -19,6 +19,7 @@ int main(void) {
     SetWindowIcon(icon);
 
     Game game = {0};
+    game_start(&game, GAME_REGULAR);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
