@@ -283,12 +283,7 @@ static const u8 expansion_edge_to_vertices[EXPANSION_EDGES][2] = {};
 // RECOMMENDED -> same everytime for first game (remove this and just use seed??)
 // BALANCED -> random tiles, walk in order (skip desert) and use set numbers
 void board_setup(Board* board, GameType game_type) {
-    for (int i = 0; i < MAX_BOARD_EDGES; i++) {
-        board->edges[i] = MAX_PLAYERS;
-    }
-    for (int i = 0; i < MAX_BOARD_VERTICES; i++) {
-        board->vertices[i] = MAX_PLAYERS;
-    }
+    // TODO: Set robber to desert
     board->robber_position = MAX_BOARD_HEXES;
     board->robber_moved_by = MAX_PLAYERS;
 
@@ -312,18 +307,6 @@ void board_setup(Board* board, GameType game_type) {
             }
             break;
     }
-}
-
-void board_place_road(Board* board, u8 edge_index, u8 player_index) {
-    board->edges[edge_index] = player_index;
-}
-
-void board_place_settlement(Board* board, u8 vertex_index, u8 player_index) {
-    board->vertices[vertex_index] = player_index;
-}
-
-void board_place_city(Board* board, u8 vertex_index, u8 player_index) {
-    board->vertices[vertex_index] = player_index;
 }
 
 void board_place_robber(Board* board, u8 tile_index, u8 player_index) {

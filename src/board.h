@@ -27,11 +27,6 @@ typedef enum {
 } Port;
 
 typedef struct {
-	// Technically these are no longer needed as players store everything /////
-	u8 edges[MAX_BOARD_EDGES];
-	u8 vertices[MAX_BOARD_VERTICES];
-	///////////////////////////////////////////////////////////////////////////
-
 	TerrainHex hexes[MAX_BOARD_HEXES];
 	u8 hex_values[MAX_BOARD_HEXES];  // Dice roll needed to collect
 	Port ports[MAX_BOARD_PORTS];
@@ -41,9 +36,6 @@ typedef struct {
 } Board;
 
 void board_setup(Board* board, GameType game_type);
-void board_place_road(Board* board, u8 edge_index, u8 player_index);
-void board_place_settlement(Board* board, u8 vertex_index, u8 player_index);
-void board_place_city(Board* board, u8 vertex_index, u8 player_index);
 void board_place_robber(Board* board, u8 tile_index, u8 player_index);
 
 #endif  /* BOARD_H */

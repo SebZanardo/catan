@@ -31,19 +31,21 @@ typedef struct {
 	// For every road location true or false if possible to place there
 	bool available_edge_positions[MAX_BOARD_EDGES];
 
+	// True or false if we have a road placed at specific index
+	bool placed_road_positions[MAX_BOARD_EDGES];
+
 	// For every settlemenet location true or false if possible to place there
 	bool available_vertex_positions[MAX_BOARD_VERTICES];
 
-	// u8 for roads will correspond to board->edges index
-	u8 placed_road_positions[MAX_PLAYER_ROADS];
+	// True or false if we have a settlement placed at specific index
+	bool placed_settlement_positions[MAX_BOARD_VERTICES];
 
-	// u8 for settlements will correspond to board->vertices index
-	u8 placed_settlement_positions[MAX_PLAYER_SETTLEMENTS];
-
-	// u8 for cities will correspond to board->vertices index
-	u8 placed_city_positions[MAX_PLAYER_CITIES];
+	// True or false if we have a settlement placed at specific index
+	bool placed_city_positions[MAX_BOARD_VERTICES];
 
 	///////////////////////////////////////////////////////////////////////////
+	
+	u8 victory_points;
 
 	u8 resource_cards[RESOURCE_CARD_TYPE_COUNT];
 	u8 development_cards_held[DEVELOPMENT_CARD_TYPE_COUNT];
@@ -55,6 +57,10 @@ typedef struct {
 } Player;
 
 void player_setup(Player* player);
+
+void player_collect_resource(Player* player, ResourceCard resource);
+void player_spend_resource(Player* player, ResourceCard resource);
+
 void player_build_road(Player* player, u8 edge_index);
 void player_build_settlement(Player* player, u8 vertex_index);
 void player_build_city(Player* player, u8 vertex_index);

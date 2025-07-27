@@ -3,10 +3,13 @@
 void player_setup(Player* player) {
     for (int i = 0; i < MAX_BOARD_EDGES; i++) {
         player->available_edge_positions[i] = false;
+        player->placed_road_positions[i] = false;
     }
 
     for (int i = 0; i < MAX_BOARD_VERTICES; i++) {
         player->available_vertex_positions[i] = false;
+        player->placed_settlement_positions[i] = false;
+        player->placed_city_positions[i] = false;
     }
 
     for (int i = 0; i < RESOURCE_CARD_TYPE_COUNT; i++) {
@@ -21,32 +24,42 @@ void player_setup(Player* player) {
     player->placed_roads = 0;
     player->placed_settlements = 0;
     player->placed_cities = 0;
+
+    player->victory_points = 0;
+}
+
+void player_collect_resource(Player* player, ResourceCard resource) {
+    player->resource_cards[resource]++;
+}
+
+void player_spend_resource(Player* player, ResourceCard resource) {
+    player->resource_cards[resource]--;
 }
 
 void player_build_road(Player* player, u8 edge_index) {
-    player->resource_cards[BRICK]--;
-    player->resource_cards[WOOD]--;
-    player->placed_road_positions[player->placed_roads++] = edge_index;
+    player->placed_road_positions[edge_index] = true;
+    player->placed_roads++;
 }
 
 void player_build_settlement(Player* player, u8 vertex_index) {
-    player->resource_cards[BRICK]--;
-    player->resource_cards[WOOD]--;
-    player->resource_cards[WHEAT]--;
-    player->resource_cards[WOOL]--;
-    player->placed_settlement_positions[player->placed_settlements++] = vertex_index;
+    player->placed_settlement_positions[vertex_index] = true;
+    player->placed_settlements++;
+
+    player->victory_points++;
 }
 
 void player_build_city(Player* player, u8 vertex_index) {
-    player->resource_cards[WHEAT] -= 2;
-    player->resource_cards[ORE] -= 3;
-    player->placed_city_positions[player->placed_cities++] = vertex_index;
+    player->placed_city_positions[vertex_index] = true;
+    player->placed_cities++;
+
+    player->victory_points++;
 }
 
 void player_build_development_card(Player* player, DevelopmentCard card) {
-    player->resource_cards[WOOL]--;
-    player->resource_cards[WHEAT]--;
-    player->resource_cards[ORE]--;
+    if (card == VICTORY_POINT) {
+        player->victory_points++;
+    }
+
     player->development_cards_held[card]++;
 }
 

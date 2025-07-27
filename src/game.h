@@ -9,10 +9,14 @@
 typedef struct {
 	Board board;
 	Cards cards;
+
 	Player players[MAX_PLAYERS];
 	u8 player_order[MAX_PLAYERS];
+
+	Player* active_player;
 	u8 player_count;
 	u8 player_turn;
+
 	GameType game_type;
 } Game;
 
@@ -30,5 +34,8 @@ void game_build_road(Game* game, u8 edge_index);
 void game_build_settlement(Game* game, u8 vertex_index);
 void game_build_city(Game* game, u8 vertex_index);
 void game_build_development_card(Game* game);
+
+void game_next_turn(Game* game);
+void game_update_active_player(Game* game);
 
 #endif  /* GAME_H */

@@ -57,7 +57,7 @@ DevelopmentCard card_draw_development_card(Cards* cards) {
 // Fair random in-place shuffle
 // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 void cards_random_shuffle(Cards* cards) {
-    for (u8 i = cards->development_card_count - 1; i > 0; i--) {
+    for (int i = cards->development_card_count - 1; i > 0; i--) {
         u8 j = GetRandomValue(0, i);
         DevelopmentCard temp = cards->development_cards[i];
         cards->development_cards[i] = cards->development_cards[j];

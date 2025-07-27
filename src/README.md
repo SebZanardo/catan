@@ -1,7 +1,10 @@
 # Technical Details
 
 ## Game Representation
-`NOTE: The current Game representation is subject to change`
+```
+NOTE: The current Game representation is subject to change as it will need
+to store a state for the phase of the current turn.
+```
 
 Gametype can be `REGULAR` (2-4 players) or `EXPANSION` (5-6 players)
 ```c
@@ -20,6 +23,13 @@ Player players[MAX_PLAYERS];
 u8 player_count;
 ```
 
+Randomise playing order at the start of the game. Store references
+```c
+u8 player_order[MAX_PLAYERS];
+Player* active_player;
+u8 player_turn;
+```
+
 ## Player Representation
 Every player stores their name and player colour
 
@@ -28,20 +38,23 @@ char name[MAX_PLAYER_NAME_LENGTH];
 PlayerColour colour;
 ```
 
-Keep track of number of structures placed and where they are placed on the map
+Keep track of number of structures placed
 ```c
 u8 placed_roads;
 u8 placed_settlements;
 u8 placed_cities;
+```
 
-// u8 for roads will correspond to board->edges index
-u8 placed_road_positions[MAX_PLAYER_ROADS];
+Keep track of placements with O(1) lookup
+```c
+// True or false if we have a road placed at specific index
+bool placed_road_positions[MAX_BOARD_EDGES];
 
-// u8 for settlements will correspond to board->vertices index
-u8 placed_settlement_positions[MAX_PLAYER_SETTLEMENTS];
+// True or false if we have a settlement placed at specific index
+bool placed_settlement_positions[MAX_BOARD_VERTICES];
 
-// u8 for cities will correspond to board->vertices index
-u8 placed_city_positions[MAX_PLAYER_CITIES];
+// True or false if we have a settlement placed at specific index
+bool placed_city_positions[MAX_BOARD_VERTICES];
 ```
 
 Keep track of next valid road and settlement positions
@@ -89,7 +102,7 @@ u8 robber_position;
 u8 robber_moved_by;  // Store what player moved the robber last
 ```
 
-## \[REGULAR] (2-4 players)
+## REGULAR (2-4 players)
 ### Edge Index Mapping
 ```sh
                ---       ---       ---
@@ -198,7 +211,7 @@ u8 robber_moved_by;  // Store what player moved the robber last
                -x-       -x-       ---
 ```
 
-## \[EXPANSION] (5-6 players)
+## EXPANSION (5-6 players)
 ### Edge Index Mapping
 ```sh
                     ---       ---       ---
