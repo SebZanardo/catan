@@ -6,6 +6,7 @@
 #include <assert.h>  // for assert(), static_assert()
 #include <stdint.h>
 #include <stdbool.h>
+#include <math.h>
 
 #include "raylib.h"
 /*#include "raymath.h"*/

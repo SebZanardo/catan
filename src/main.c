@@ -22,9 +22,41 @@ int main(void) {
     Game game = {0};
     game_start(&game, GAME_REGULAR);
 
+    float hexagon_height = 90;
+    float hexagon_width = hexagon_height * sqrt(3);
+
+    int width = 5;
+    int height = 5;
+    int offset_x = 200;
+    int offset_y = 200;
+    bool grid[5][5] = {
+        {false, true, true, true, false},
+        {true, true, true, true, false},
+        {true, true, true, true, true},
+        {true, true, true, true, false},
+        {false, true, true, true, false}
+    };
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (!grid[y][x]) continue;
+                DrawPolyLines(
+                    (Vector2){
+                        ((float)x + ((y % 2) * 0.5)) * hexagon_width + offset_x,
+                        (float)y * 3/2 * hexagon_height + offset_y
+                    },
+                    6,
+                    hexagon_height,
+                    90,
+                    MAGENTA
+                );
+            }
+        }
+
         EndDrawing();
     }
 
