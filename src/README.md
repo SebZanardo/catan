@@ -22,6 +22,7 @@ u8 player_count;
 
 ## Player Representation
 Every player stores their name and player colour
+
 ```c
 char name[MAX_PLAYER_NAME_LENGTH];
 PlayerColour colour;
@@ -41,6 +42,12 @@ u8 placed_settlement_positions[MAX_PLAYER_SETTLEMENTS];
 
 // u8 for cities will correspond to board->vertices index
 u8 placed_city_positions[MAX_PLAYER_CITIES];
+```
+
+Keep track of next valid road and settlement positions
+```c
+bool available_edge_positions[MAX_BOARD_EDGES];
+bool available_vertex_positions[MAX_BOARD_VERTICES];
 ```
 
 Keep track of number of each card type for easy adding and removal and tracking

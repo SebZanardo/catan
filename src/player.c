@@ -1,6 +1,14 @@
 #include "player.h"
 
 void player_setup(Player* player) {
+    for (int i = 0; i < MAX_BOARD_EDGES; i++) {
+        player->available_edge_positions[i] = false;
+    }
+
+    for (int i = 0; i < MAX_BOARD_VERTICES; i++) {
+        player->available_vertex_positions[i] = false;
+    }
+
     for (int i = 0; i < RESOURCE_CARD_TYPE_COUNT; i++) {
         player->resource_cards[i] = 0;
     }

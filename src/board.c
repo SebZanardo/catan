@@ -51,63 +51,119 @@ static const u8 regular_hex_to_vertices[REGULAR_HEXES][6] = {
     {18, 23, 24, 29, 30, 35}
 };
 
-// TODO: There is most definitely a pattern here. Would be good to simplify
-// Pass 3, 4, 5, 4, 3 into a function?
-static const u8 regular_vertices_to_neighbours[REGULAR_VERTICES][3] = {
-    {3, 4, MAX_BOARD_VERTICES},
-    {4, 5, MAX_BOARD_VERTICES},
-    {5, 6, MAX_BOARD_VERTICES},
-    {0, 7, MAX_BOARD_VERTICES},
-    {0, 1, 8},
-    {1, 2, 9},
-    {2, 10, MAX_BOARD_VERTICES},
-    {3, 11, 12},
-    {4, 12, 13},
-    {5, 13, 14},
-    {6, 14, 15},
-    {7, 16, MAX_BOARD_VERTICES},
-    {7, 8, 17},
-    {8, 9, 18},
-    {9, 10, 19},
-    {10, 20, MAX_BOARD_VERTICES},
-    {11, 21, 22},
-    {12, 22, 23},
-    {13, 23, 24},
-    {14, 24, 25},
-    {15, 25, 26},
-    {16, 27, MAX_BOARD_VERTICES},
-    {16, 17, 28},
-    {17, 18, 29},
-    {18, 19, 30},
-    {19, 20, 31},
-    {20, 32, MAX_BOARD_VERTICES},
-    {21, 33, MAX_BOARD_VERTICES},
-    {22, 33, 34},
-    {23, 34, 35},
-    {24, 35, 36},
-    {25, 36, 37},
-    {26, 37, MAX_BOARD_VERTICES},
-    {27, 28, 38},
-    {28, 29, 39},
-    {29, 30, 40},
-    {30, 31, 41},
-    {31, 32, 42},
-    {33, 43, MAX_BOARD_VERTICES},
-    {34, 43, 44},
-    {35, 44, 45},
-    {36, 45, 46},
-    {37, 46, MAX_BOARD_VERTICES},
-    {38, 39, 47},
-    {39, 40, 48},
-    {40, 41, 49},
+// Don't actually need this if we have vertices to edges map
+/*static const u8 regular_vertices_to_neighbours[REGULAR_VERTICES][3] = {*/
+/*    {3, 4, MAX_BOARD_VERTICES},*/
+/*    {4, 5, MAX_BOARD_VERTICES},*/
+/*    {5, 6, MAX_BOARD_VERTICES},*/
+/*    {0, 7, MAX_BOARD_VERTICES},*/
+/*    {0, 1, 8},*/
+/*    {1, 2, 9},*/
+/*    {2, 10, MAX_BOARD_VERTICES},*/
+/*    {3, 11, 12},*/
+/*    {4, 12, 13},*/
+/*    {5, 13, 14},*/
+/*    {6, 14, 15},*/
+/*    {7, 16, MAX_BOARD_VERTICES},*/
+/*    {7, 8, 17},*/
+/*    {8, 9, 18},*/
+/*    {9, 10, 19},*/
+/*    {10, 20, MAX_BOARD_VERTICES},*/
+/*    {11, 21, 22},*/
+/*    {12, 22, 23},*/
+/*    {13, 23, 24},*/
+/*    {14, 24, 25},*/
+/*    {15, 25, 26},*/
+/*    {16, 27, MAX_BOARD_VERTICES},*/
+/*    {16, 17, 28},*/
+/*    {17, 18, 29},*/
+/*    {18, 19, 30},*/
+/*    {19, 20, 31},*/
+/*    {20, 32, MAX_BOARD_VERTICES},*/
+/*    {21, 33, MAX_BOARD_VERTICES},*/
+/*    {22, 33, 34},*/
+/*    {23, 34, 35},*/
+/*    {24, 35, 36},*/
+/*    {25, 36, 37},*/
+/*    {26, 37, MAX_BOARD_VERTICES},*/
+/*    {27, 28, 38},*/
+/*    {28, 29, 39},*/
+/*    {29, 30, 40},*/
+/*    {30, 31, 41},*/
+/*    {31, 32, 42},*/
+/*    {33, 43, MAX_BOARD_VERTICES},*/
+/*    {34, 43, 44},*/
+/*    {35, 44, 45},*/
+/*    {36, 45, 46},*/
+/*    {37, 46, MAX_BOARD_VERTICES},*/
+/*    {38, 39, 47},*/
+/*    {39, 40, 48},*/
+/*    {40, 41, 49},*/
+/*    {41, 42, 50},*/
+/*    {43, 51, MAX_BOARD_VERTICES},*/
+/*    {44, 51, 52},*/
+/*    {45, 52, 53},*/
+/*    {46, 53, MAX_BOARD_VERTICES},*/
+/*    {47, 48, MAX_BOARD_VERTICES},*/
+/*    {48, 49, MAX_BOARD_VERTICES},*/
+/*    {49, 50, MAX_BOARD_VERTICES}*/
+/*};*/
+
+static const u8 regular_vertices_to_edges[REGULAR_VERTICES][3] = {
+    {0, 1, MAX_BOARD_EDGES},
+    {2, 3, MAX_BOARD_EDGES},
+    {4, 5, MAX_BOARD_EDGES},
+    {0, 6, MAX_BOARD_EDGES},
+    {1, 2, 7},
+    {3, 4, 8},
+    {5, 9, MAX_BOARD_EDGES},
+    {6, 10, 11},
+    {7, 12, 13},
+    {8, 14, 15},
+    {9, 16, 17},
+    {10, 18, MAX_BOARD_EDGES},
+    {11, 12, 19},
+    {13, 14, 20},
+    {15, 16, 21},
+    {17, 22, MAX_BOARD_EDGES},
+    {18, 23, 24},
+    {19, 25, 26},
+    {20, 27, 28},
+    {21, 29, 30},
+    {22, 31, 32},
+    {23, 33, MAX_BOARD_EDGES},
+    {24, 25, 34},
+    {26, 27, 35},
+    {28, 29, 36},
+    {30, 31, 37},
+    {32, 38, MAX_BOARD_EDGES},
+    {33, 39, MAX_BOARD_EDGES},
+    {34, 40, 41},
+    {35, 42, 43},
+    {36, 44, 45},
+    {37, 46, 47},
+    {38, 48, MAX_BOARD_EDGES},
+    {39, 40, 49},
     {41, 42, 50},
-    {43, 51, MAX_BOARD_VERTICES},
-    {44, 51, 52},
-    {45, 52, 53},
-    {46, 53, MAX_BOARD_VERTICES},
-    {47, 48, MAX_BOARD_VERTICES},
-    {48, 49, MAX_BOARD_VERTICES},
-    {49, 50, MAX_BOARD_VERTICES}
+    {43, 44, 51},
+    {45, 46, 52},
+    {47, 48, 53},
+    {49, 54, MAX_BOARD_EDGES},
+    {50, 55, 56},
+    {51, 57, 58},
+    {52, 59, 60},
+    {53, 61, MAX_BOARD_EDGES},
+    {54, 55, 62},
+    {56, 57, 63},
+    {58, 59, 64},
+    {60, 61, 65},
+    {62, 66, MAX_BOARD_EDGES},
+    {63, 67, 68},
+    {64, 69, 70},
+    {65, 71, MAX_BOARD_EDGES},
+    {66, 67, MAX_BOARD_EDGES},
+    {68, 69, MAX_BOARD_EDGES},
+    {70, 71, MAX_BOARD_EDGES}
 };
 
 // TODO: There is most definitely a pattern here. Would be good to simplify
@@ -218,9 +274,9 @@ static const u8 expansion_hex_values[EXPANSION_HEXES] = {
     10, 11, 12, 10, 5, 4, 9, 5, 9, 12, 3, 2, 6
 };
 
-// TODO: Yeah not gonna do these ones by hand. We need to write a function
+// TODO: Yeah not gonna do these by hand. We need to write a function or script
 static const u8 expansion_hex_to_vertices[EXPANSION_HEXES][6] = {};
-static const u8 expansion_vertices_to_neighbours[EXPANSION_VERTICES][3] = {};
+static const u8 expansion_vertices_to_edges[EXPANSION_VERTICES][3] = {};
 static const u8 expansion_edge_to_vertices[EXPANSION_EDGES][2] = {};
 
 // TODO: Setup options
