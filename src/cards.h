@@ -31,6 +31,5 @@ typedef struct {
 
 void cards_setup(Cards* cards, GameType game_type);
 DevelopmentCard card_draw_development_card(Cards* cards);
-void cards_random_shuffle(Cards* cards);
 
 #endif  /* CARDS_H */

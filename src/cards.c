@@ -19,6 +19,8 @@ DevelopmentCard expansion_development_cards[EXPANSION_DEVELOPMENT_CARD_COUNT] = 
     VICTORY_POINT, VICTORY_POINT, VICTORY_POINT, VICTORY_POINT
 };
 
+DEFINE_SHUFFLE_FUNCTION(DevelopmentCard, cards_shuffle, MAX_DEVELOPMENT_CARDS);
+
 void cards_setup(Cards* cards, GameType game_type) {
     switch (game_type) {
         case GAME_REGULAR:
@@ -29,10 +31,10 @@ void cards_setup(Cards* cards, GameType game_type) {
             cards->resource_cards[ORE] = 19;
 
             cards->development_card_count = REGULAR_DEVELOPMENT_CARD_COUNT;
+
             for (int i = 0; i < REGULAR_DEVELOPMENT_CARD_COUNT; i++) {
                 cards->development_cards[i] = regular_development_cards[i];
             }
-            cards_random_shuffle(cards);
             break;
         case GAME_EXPANSION:
             cards->resource_cards[BRICK] = 24;
@@ -42,25 +44,16 @@ void cards_setup(Cards* cards, GameType game_type) {
             cards->resource_cards[ORE] = 24;
 
             cards->development_card_count = EXPANSION_DEVELOPMENT_CARD_COUNT;
+
             for (int i = 0; i < EXPANSION_DEVELOPMENT_CARD_COUNT; i++) {
                 cards->development_cards[i] = expansion_development_cards[i];
             }
-            cards_random_shuffle(cards);
             break;
     }
+
+    cards_shuffle(&cards->development_cards, cards->development_card_count);
 }
 
 DevelopmentCard card_draw_development_card(Cards* cards) {
     return cards->development_cards[--cards->development_card_count];
-}
-
-// Fair random in-place shuffle
-// https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-void cards_random_shuffle(Cards* cards) {
-    for (int i = cards->development_card_count - 1; i > 0; i--) {
-        u8 j = GetRandomValue(0, i);
-        DevelopmentCard temp = cards->development_cards[i];
-        cards->development_cards[i] = cards->development_cards[j];
-        cards->development_cards[j] = temp;
-    }
 }

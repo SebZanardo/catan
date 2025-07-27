@@ -1,5 +1,7 @@
 #include "game.h"
 
+DEFINE_SHUFFLE_FUNCTION(u8, game_player_order_shuffle, MAX_PLAYERS)
+
 void game_start(Game* game, GameType game_type) {
     game->game_type = game_type;
 
@@ -11,15 +13,9 @@ void game_start(Game* game, GameType game_type) {
     }
 
     // Shuffle turn order map
-    // Fair random in-place shuffle
-    // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-    for (int i = game->player_count - 1; i > 0; i--) {
-        u8 j = GetRandomValue(0, i);
-        u8 temp = game->player_order[i];
-        game->player_order[i] = game->player_order[j];
-        game->player_order[j] = temp;
-    }
+    game_player_order_shuffle(&game->player_order, game->player_count);
 
+    // Update player pointer so first player
     game_update_active_player(game);
 
     board_setup(&game->board, game_type);

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Define the files to compile in one place here
-SOURCES="src/main.c src/game.c src/cards.c src/board.c src/player.c"
+SOURCES="src/main.c src/game.c src/cards.c src/board.c src/player.c src/lookup.c"
 
 LINUX="linux"
 MACOS="macos"

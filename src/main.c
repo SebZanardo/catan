@@ -14,6 +14,7 @@ int main(void) {
     InitAudioDevice();
 
     SetRandomSeed(0);
+    srand(0);
 
     Image icon = LoadImage("src/data/textures/icon.png");
     SetWindowIcon(icon);
