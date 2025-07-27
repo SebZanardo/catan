@@ -10,25 +10,37 @@ static_assert(REGULAR_EDGES <= MAX_BOARD_EDGES, "");
 static_assert(REGULAR_PORTS <= MAX_BOARD_PORTS, "");
 
 // TODO: Read these lookup tables from file so easy to load custom maps
-// Can make custom file format! Yippee that'll be fun :))
-static const TerrainHex regular_recommended_hexes[REGULAR_HEXES] = {
-    TERRAIN_PASTURE, TERRAIN_FIELD, TERRAIN_DESERT, TERRAIN_HILL,
-    TERRAIN_FOREST, TERRAIN_FIELD, TERRAIN_MOUNTAIN, TERRAIN_FIELD,
-    TERRAIN_PASTURE, TERRAIN_FOREST, TERRAIN_PASTURE, TERRAIN_MOUNTAIN,
-    TERRAIN_FOREST, TERRAIN_PASTURE, TERRAIN_FIELD, TERRAIN_HILL,
-    TERRAIN_MOUNTAIN, TERRAIN_FOREST, TERRAIN_HILL
+// Make custom file format! Yippee that'll be fun :))
+static const TerrainHex regular_hexes[REGULAR_HEXES] = {
+    TERRAIN_HILL, TERRAIN_HILL, TERRAIN_HILL,
+    TERRAIN_FOREST, TERRAIN_FOREST, TERRAIN_FOREST, TERRAIN_FOREST,
+    TERRAIN_PASTURE, TERRAIN_PASTURE, TERRAIN_PASTURE, TERRAIN_PASTURE,
+    TERRAIN_FIELD, TERRAIN_FIELD, TERRAIN_FIELD, TERRAIN_FIELD,
+    TERRAIN_MOUNTAIN, TERRAIN_MOUNTAIN, TERRAIN_MOUNTAIN,
+    TERRAIN_DESERT
 };
-static const Port regular_recommended_ports[REGULAR_PORTS] = {
-    PORT_THREE, PORT_WOOL, PORT_THREE, PORT_THREE, PORT_BRICK,
-    PORT_WOOD, PORT_THREE, PORT_WHEAT, PORT_ORE
-};
-static const u8 regular_recommended_hex_values[REGULAR_HEXES] = {
-    11, 8, 0, 6, 10, 2, 6, 3, 10, 8, 5, 9, 4, 3, 5, 9, 4, 12,
+static const Port regular_ports[REGULAR_PORTS] = {
+    PORT_THREE, PORT_THREE, PORT_THREE, PORT_THREE,
+    PORT_BRICK,
+    PORT_WOOD,
+    PORT_WOOL,
+    PORT_WHEAT,
+    PORT_ORE
 };
 static const u8 regular_hex_values[REGULAR_HEXES] = {
     5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11,
 };
-
+static const u8 regular_port_locations[REGULAR_PORTS][2] = {
+    {0, 3},
+    {1, 5},
+    {10, 15},
+    {26, 32},
+    {42, 46},
+    {49, 52},
+    {47, 51},
+    {33, 38},
+    {11, 16}
+};
 static const u8 regular_hex_to_vertices[REGULAR_HEXES][6] = {
     {2, 5, 6, 9, 10, 14},
     {1, 4, 5, 8, 9, 13},
@@ -50,65 +62,6 @@ static const u8 regular_hex_to_vertices[REGULAR_HEXES][6] = {
     {19, 24, 25, 30, 31, 36},
     {18, 23, 24, 29, 30, 35}
 };
-
-// Don't actually need this if we have vertices to edges map
-/*static const u8 regular_vertices_to_neighbours[REGULAR_VERTICES][3] = {*/
-/*    {3, 4, MAX_BOARD_VERTICES},*/
-/*    {4, 5, MAX_BOARD_VERTICES},*/
-/*    {5, 6, MAX_BOARD_VERTICES},*/
-/*    {0, 7, MAX_BOARD_VERTICES},*/
-/*    {0, 1, 8},*/
-/*    {1, 2, 9},*/
-/*    {2, 10, MAX_BOARD_VERTICES},*/
-/*    {3, 11, 12},*/
-/*    {4, 12, 13},*/
-/*    {5, 13, 14},*/
-/*    {6, 14, 15},*/
-/*    {7, 16, MAX_BOARD_VERTICES},*/
-/*    {7, 8, 17},*/
-/*    {8, 9, 18},*/
-/*    {9, 10, 19},*/
-/*    {10, 20, MAX_BOARD_VERTICES},*/
-/*    {11, 21, 22},*/
-/*    {12, 22, 23},*/
-/*    {13, 23, 24},*/
-/*    {14, 24, 25},*/
-/*    {15, 25, 26},*/
-/*    {16, 27, MAX_BOARD_VERTICES},*/
-/*    {16, 17, 28},*/
-/*    {17, 18, 29},*/
-/*    {18, 19, 30},*/
-/*    {19, 20, 31},*/
-/*    {20, 32, MAX_BOARD_VERTICES},*/
-/*    {21, 33, MAX_BOARD_VERTICES},*/
-/*    {22, 33, 34},*/
-/*    {23, 34, 35},*/
-/*    {24, 35, 36},*/
-/*    {25, 36, 37},*/
-/*    {26, 37, MAX_BOARD_VERTICES},*/
-/*    {27, 28, 38},*/
-/*    {28, 29, 39},*/
-/*    {29, 30, 40},*/
-/*    {30, 31, 41},*/
-/*    {31, 32, 42},*/
-/*    {33, 43, MAX_BOARD_VERTICES},*/
-/*    {34, 43, 44},*/
-/*    {35, 44, 45},*/
-/*    {36, 45, 46},*/
-/*    {37, 46, MAX_BOARD_VERTICES},*/
-/*    {38, 39, 47},*/
-/*    {39, 40, 48},*/
-/*    {40, 41, 49},*/
-/*    {41, 42, 50},*/
-/*    {43, 51, MAX_BOARD_VERTICES},*/
-/*    {44, 51, 52},*/
-/*    {45, 52, 53},*/
-/*    {46, 53, MAX_BOARD_VERTICES},*/
-/*    {47, 48, MAX_BOARD_VERTICES},*/
-/*    {48, 49, MAX_BOARD_VERTICES},*/
-/*    {49, 50, MAX_BOARD_VERTICES}*/
-/*};*/
-
 static const u8 regular_vertices_to_edges[REGULAR_VERTICES][3] = {
     {0, 1, MAX_BOARD_EDGES},
     {2, 3, MAX_BOARD_EDGES},
@@ -165,9 +118,6 @@ static const u8 regular_vertices_to_edges[REGULAR_VERTICES][3] = {
     {68, 69, MAX_BOARD_EDGES},
     {70, 71, MAX_BOARD_EDGES}
 };
-
-// TODO: There is most definitely a pattern here. Would be good to simplify
-// Pass 3, 4, 5, 4, 3 into a function?
 static const u8 regular_edge_to_vertices[REGULAR_EDGES][2] = {
     {0, 3},
     {0, 4},
@@ -251,62 +201,69 @@ static_assert(EXPANSION_EDGES <= MAX_BOARD_EDGES, "");
 static_assert(EXPANSION_VERTICES <= MAX_BOARD_VERTICES, "");
 static_assert(EXPANSION_PORTS <= MAX_BOARD_PORTS, "");
 
-static const TerrainHex expansion_recommended_hexes[EXPANSION_HEXES] = {
-    TERRAIN_DESERT, TERRAIN_PASTURE, TERRAIN_HILL, TERRAIN_HILL,
-    TERRAIN_FOREST, TERRAIN_DESERT, TERRAIN_FOREST, TERRAIN_FOREST,
-    TERRAIN_HILL, TERRAIN_PASTURE, TERRAIN_MOUNTAIN, TERRAIN_FIELD,
-    TERRAIN_FOREST, TERRAIN_FIELD, TERRAIN_PASTURE, TERRAIN_HILL,
-    TERRAIN_MOUNTAIN, TERRAIN_FIELD, TERRAIN_MOUNTAIN, TERRAIN_PASTURE,
-    TERRAIN_MOUNTAIN, TERRAIN_FIELD, TERRAIN_FOREST, TERRAIN_HILL,
-    TERRAIN_PASTURE, TERRAIN_FIELD, TERRAIN_FOREST, TERRAIN_FIELD,
-    TERRAIN_PASTURE, TERRAIN_MOUNTAIN
+static const TerrainHex expansion_hexes[EXPANSION_HEXES] = {
+    TERRAIN_HILL, TERRAIN_HILL, TERRAIN_HILL, TERRAIN_HILL, TERRAIN_HILL,
+    TERRAIN_FOREST, TERRAIN_FOREST, TERRAIN_FOREST, TERRAIN_FOREST, TERRAIN_FOREST, TERRAIN_FOREST,
+    TERRAIN_PASTURE, TERRAIN_PASTURE, TERRAIN_PASTURE, TERRAIN_PASTURE, TERRAIN_PASTURE, TERRAIN_PASTURE,
+    TERRAIN_FIELD, TERRAIN_FIELD, TERRAIN_FIELD, TERRAIN_FIELD, TERRAIN_FIELD, TERRAIN_FIELD,
+    TERRAIN_MOUNTAIN, TERRAIN_MOUNTAIN, TERRAIN_MOUNTAIN, TERRAIN_MOUNTAIN, TERRAIN_MOUNTAIN,
+    TERRAIN_DESERT, TERRAIN_DESERT
 };
-static const Port expansion_recommended_ports[EXPANSION_PORTS] = {
-    PORT_THREE, PORT_WOOL, PORT_THREE, PORT_THREE, PORT_BRICK,
-    PORT_WOOL, PORT_WOOD, PORT_THREE, PORT_WHEAT, PORT_THREE, PORT_ORE
-};
-static const u8 expansion_recommended_hex_values[EXPANSION_HEXES] = {
-    0, 6, 10, 6, 3, 0, 12, 8, 9, 12, 8, 5, 11, 8, 4,
-    11, 9, 2, 11, 5, 10, 3, 9, 4, 3, 10, 5, 4, 2, 6
+static const Port expansion_ports[EXPANSION_PORTS] = {
+    PORT_THREE, PORT_THREE, PORT_THREE, PORT_THREE, PORT_THREE,
+    PORT_BRICK,
+    PORT_WOOD,
+    PORT_WOOL, PORT_WOOL,
+    PORT_WHEAT,
+    PORT_ORE
 };
 static const u8 expansion_hex_values[EXPANSION_HEXES] = {
     2, 5, 4, 6, 3, 9, 8, 11, 11, 10, 6, 3, 8, 4, 8,
     10, 11, 12, 10, 5, 4, 9, 5, 9, 12, 3, 2, 6
 };
-
-// TODO: Yeah not gonna do these by hand. We need to write a function or script
+static const u8 expansion_port_locations[EXPANSION_PORTS][2] = {};
 static const u8 expansion_hex_to_vertices[EXPANSION_HEXES][6] = {};
 static const u8 expansion_vertices_to_edges[EXPANSION_VERTICES][3] = {};
 static const u8 expansion_edge_to_vertices[EXPANSION_EDGES][2] = {};
 
-// TODO: Setup options
-// RECOMMENDED -> same everytime for first game (remove this and just use seed??)
-// BALANCED -> random tiles, walk in order (skip desert) and use set numbers
 void board_setup(Board* board, GameType game_type) {
-    // TODO: Set robber to desert
     board->robber_position = MAX_BOARD_HEXES;
     board->robber_moved_by = MAX_PLAYERS;
 
     switch (game_type) {
         case GAME_REGULAR:
+            board->edges_count = REGULAR_EDGES;
+            board->vertices_count = REGULAR_VERTICES;
+            board->hex_count = REGULAR_HEXES;
+            board->port_count = REGULAR_PORTS;
+
             for (int i = 0; i < REGULAR_HEXES; i++) {
-                board->hexes[i] = regular_recommended_hexes[i];
-                board->hex_values[i] = regular_recommended_hex_values[i];
+                board->hexes[i] = regular_hexes[i];
             }
             for (int i = 0; i < REGULAR_PORTS; i++) {
-                board->ports[i] = regular_recommended_ports[i];
+                board->ports[i] = regular_ports[i];
             }
             break;
         case GAME_EXPANSION:
+            board->edges_count = EXPANSION_EDGES;
+            board->vertices_count = EXPANSION_VERTICES;
+            board->hex_count = EXPANSION_HEXES;
+            board->port_count = EXPANSION_PORTS;
+
             for (int i = 0; i < EXPANSION_HEXES; i++) {
-                board->hexes[i] = expansion_recommended_hexes[i];
-                board->hex_values[i] = expansion_recommended_hex_values[i];
+                board->hexes[i] = expansion_hexes[i];
             }
             for (int i = 0; i < EXPANSION_PORTS; i++) {
-                board->ports[i] = expansion_recommended_ports[i];
+                board->ports[i] = expansion_ports[i];
             }
             break;
     }
+
+    // TODO: Shuffle hexes
+    // TODO: Shuffle ports
+
+    // TODO: Walk hexes and assign values
+    // TODO: Set robber to desert
 }
 
 void board_place_robber(Board* board, u8 tile_index, u8 player_index) {

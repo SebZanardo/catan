@@ -82,11 +82,13 @@ DevelopmentCard development_cards[MAX_DEVELOPMENT_CARDS];
 u8 development_card_count;
 ```
 
-## Board Representation 
-Set to `MAX_PLAYER_COUNT` when empty and player index when structure is placed
+## Board Representation
+To keep track of length of arrays for various things
 ```c
-u8 edges[MAX_BOARD_EDGES];
-u8 vertices[MAX_BOARD_VERTICES];
+u8 edges_count;
+u8 vertices_count;
+u8 hex_count;
+u8 port_count;
 ```
 
 Store how the board has been setup for this game
