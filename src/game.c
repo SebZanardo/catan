@@ -61,10 +61,28 @@ bool game_setup_remove_player(Game* game, u8 index) {
 bool game_valid_road(Game* game, u8 edge_index) {
     assert(edge_index < MAX_BOARD_EDGES);
 
-    // A road is valid if there is no road currently there
-    // You have an available road
-    // You have adequate resources
-    // You are building from one of your roads
+    // Check that player has roads left to place
+    if (game->active_player->placed_roads >= MAX_PLAYER_ROADS) {
+        return false;
+    }
+
+    // Check that player has resources
+    if (
+        game->active_player->resource_cards[BRICK] < 1 ||
+        game->active_player->resource_cards[WOOD] < 1
+    ) {
+        return false;
+    }
+
+    // Check edge is empty
+    if (!(game->active_player->data[edge_index] & BITMASK_AVAILABLE_EDGE)) {
+        return false;
+    }
+
+    // Check edge is connected to our built roads
+    if (!(game->active_player->data[edge_index] & BITMASK_CONNECTED_EDGE)) {
+        return false;
+    }
 
     return true;
 }
@@ -72,11 +90,30 @@ bool game_valid_road(Game* game, u8 edge_index) {
 bool game_valid_settlement(Game* game, u8 vertex_index) {
     assert(vertex_index < MAX_BOARD_VERTICES);
 
-    // A settlement is valid if you are placing on an empty square
-    // You have an available settlement
-    // You have adequate resources
-    // The settlement is build from your road
-    // The settlement is 2 away from all other settlements
+    // Check that player has settlements left to place
+    if (game->active_player->placed_settlements >= MAX_PLAYER_SETTLEMENTS) {
+        return false;
+    }
+
+    // Check that player has resources
+    if (
+        game->active_player->resource_cards[BRICK] < 1 ||
+        game->active_player->resource_cards[WOOD] < 1 ||
+        game->active_player->resource_cards[WHEAT] < 1 ||
+        game->active_player->resource_cards[WOOL] < 1
+    ) {
+        return false;
+    }
+
+    // Check vertex is empty and not within two vertices of another building
+    if (!(game->active_player->data[vertex_index] & BITMASK_AVAILABLE_VERTEX)) {
+        return false;
+    }
+
+    // Check vertex is connected to our built roads
+    if (!(game->active_player->data[vertex_index] & BITMASK_CONNECTED_VERTEX)) {
+        return false;
+    }
 
     return true;
 }
@@ -84,36 +121,63 @@ bool game_valid_settlement(Game* game, u8 vertex_index) {
 bool game_valid_city(Game* game, u8 vertex_index) {
     assert(vertex_index < MAX_BOARD_VERTICES);
 
-    // A city is valid if you are placing ontop of one of your settlements
-    // You have an available city
-    // You have adequate resources
+    // Check that player has cities left to place
+    if (game->active_player->placed_cities >= MAX_PLAYER_CITIES) {
+        return false;
+    }
+
+    // Check that player has resources
+    if (
+        game->active_player->resource_cards[WHEAT] < 2 ||
+        game->active_player->resource_cards[ORE] < 3
+    ) {
+        return false;
+    }
+
+    // Check if placing ontop of settlement we own
+    if (!(game->active_player->data[vertex_index] & BITMASK_OWN_SETTLEMENT)) {
+        return false;
+    }
 
     return true;
 }
 
-bool game_valid_development_Card(Game* game) {
-
+bool game_valid_development_card(Game* game) {
     // Check that there are cards to buy
+    if (game->cards.development_card_count < 1) {
+        return false;
+    }
+
     // Check that player has resources
+    if (
+        game->active_player->resource_cards[WHEAT] < 1 ||
+        game->active_player->resource_cards[WOOL] < 1 ||
+        game->active_player->resource_cards[ORE] < 1
+    ) {
+        return false;
+    }
 
     return true;
 }
 
 void game_build_road(Game* game, u8 edge_index) {
-    player_build_road(game->active_player, edge_index);
+    // TODO: Loop through players and set edge available to false
+    player_add_road(game->active_player, edge_index);
 }
 
 void game_build_settlement(Game* game, u8 vertex_index) {
-    player_build_settlement(game->active_player, vertex_index);
+    // TODO: Loop through players and set vertex available to false
+    // Also need to do it for 3 neighbouring vertices
+    player_add_settlement(game->active_player, vertex_index);
 }
 
 void game_build_city(Game* game, u8 vertex_index) {
-    player_build_city(game->active_player, vertex_index);
+    player_add_city(game->active_player, vertex_index);
 }
 
 void game_build_development_card(Game* game) {
     DevelopmentCard card = card_draw_development_card(&game->cards);
-    player_build_development_card(game->active_player, card);
+    player_add_development_card(game->active_player, card);
 }
 
 void game_update_active_player(Game* game) {

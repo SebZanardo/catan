@@ -28,7 +28,7 @@ bool game_setup_remove_player(Game* game, u8 index);
 bool game_valid_road(Game* game, u8 edge_index);
 bool game_valid_settlement(Game* game, u8 vertex_index);
 bool game_valid_city(Game* game, u8 vertex_index);
-bool game_valid_development_Card(Game* game);
+bool game_valid_development_card(Game* game);
 
 void game_build_road(Game* game, u8 edge_index);
 void game_build_settlement(Game* game, u8 vertex_index);

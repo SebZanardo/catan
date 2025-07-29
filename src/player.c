@@ -2,14 +2,10 @@
 
 void player_setup(Player* player) {
     for (int i = 0; i < MAX_BOARD_EDGES; i++) {
-        player->available_edge_positions[i] = false;
-        player->placed_road_positions[i] = false;
-    }
-
-    for (int i = 0; i < MAX_BOARD_VERTICES; i++) {
-        player->available_vertex_positions[i] = false;
-        player->placed_settlement_positions[i] = false;
-        player->placed_city_positions[i] = false;
+        // Make all edges and vertices available
+        player->data[i] = 0;
+        player->data[i] |= BITMASK_AVAILABLE_EDGE;
+        player->data[i] |= BITMASK_AVAILABLE_VERTEX;
     }
 
     for (int i = 0; i < RESOURCE_CARD_TYPE_COUNT; i++) {
@@ -28,34 +24,66 @@ void player_setup(Player* player) {
     player->victory_points = 0;
 }
 
-void player_collect_resource(Player* player, ResourceCard resource) {
-    player->resource_cards[resource]++;
+void player_buy_road(Player* player) {
+    player->resource_cards[BRICK]--;
+    player->resource_cards[WOOD]--;
 }
 
-void player_spend_resource(Player* player, ResourceCard resource) {
-    player->resource_cards[resource]--;
+void player_buy_settlement(Player* player) {
+    player->resource_cards[BRICK]--;
+    player->resource_cards[WOOD]--;
+    player->resource_cards[WHEAT]--;
+    player->resource_cards[WOOL]--;
 }
 
-void player_build_road(Player* player, u8 edge_index) {
-    player->placed_road_positions[edge_index] = true;
+void player_buy_city(Player* player) {
+    player->resource_cards[WHEAT] -= 2;
+    player->resource_cards[ORE] -= 3;
+}
+
+void player_buy_development_card(Player* player) {
+    player->resource_cards[WHEAT]--;
+    player->resource_cards[ORE]--;
+    player->resource_cards[WOOL]--;
+}
+
+void player_add_road(Player* player, u8 edge_index) {
+    // NOTE: Game handles updating all player available edges before this
+
+    // TODO: Update connected edges
+
+    // Place road
+    player->data[edge_index] |= BITMASK_OWN_ROAD;
     player->placed_roads++;
 }
 
-void player_build_settlement(Player* player, u8 vertex_index) {
-    player->placed_settlement_positions[vertex_index] = true;
+void player_add_settlement(Player* player, u8 vertex_index) {
+    // NOTE: Game handles updating all player available vertices before this
+
+    // TODO: Update connected vertices
+
+    // Place settlement
+    player->data[vertex_index] |= BITMASK_OWN_SETTLEMENT;
     player->placed_settlements++;
 
     player->victory_points++;
 }
 
-void player_build_city(Player* player, u8 vertex_index) {
-    player->placed_city_positions[vertex_index] = true;
+void player_add_city(Player* player, u8 vertex_index) {
+    // NOTE: Game handles updating all players available vertices before this
+
+    // Place city
+    player->data[vertex_index] |= BITMASK_OWN_CITY;
     player->placed_cities++;
+
+    // Remove settlement
+    player->data[vertex_index] &= BITMASK_OWN_SETTLEMENT;
+    player->placed_settlements--;
 
     player->victory_points++;
 }
 
-void player_build_development_card(Player* player, DevelopmentCard card) {
+void player_add_development_card(Player* player, DevelopmentCard card) {
     if (card == VICTORY_POINT) {
         player->victory_points++;
     }
@@ -63,6 +91,6 @@ void player_build_development_card(Player* player, DevelopmentCard card) {
     player->development_cards_held[card]++;
 }
 
-void player_spend_development_card(Player* player, DevelopmentCard card) {
+void player_use_development_card(Player* player, DevelopmentCard card) {
     player->development_cards_held[card]--;
 }
