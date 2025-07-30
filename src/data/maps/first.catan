@@ -1,0 +1,43 @@
+# first.catan
+# This is the board that is recommended for first time players.
+# There is no randomness in this board.
+#
+# Recommended max player count
+2 4
+# Recommended victory points to win
+10
+# Max building counts
+15 5 4
+# Free starting placements count
+2 1
+# Free starting placements map
+1 1 0
+1 1 0
+# Bank resources
+19 19 19 19 19
+# Development cards
+2 2 2 14 5
+# Board dimensions
+5 5
+# Hex type map
+0 7 5 4 0
+2 4 3 6 0
+3 5 2 3 4
+5 2 6 3 0
+0 6 5 4 0
+# Hex type pool
+3 4 4 4 3 1
+# Hex value map
+0 0 8 11 0
+6 3 4 9 0
+10 5 12 11 5
+2 9 4 8 0
+0 6 3 10 0
+# Hex value pool
+0 2 3 3 4 4 5 5 6 6 8 8 9 9 10 10 11 11 12
+# Port type map
+1 4 1 1 2 3 1 5 6
+# Port type pool
+0 4 1 1 1 1
+# Port vertices map
+1 6 2 8 15 21 34 40 51 57 62 67 60 66 41 47 17 23
