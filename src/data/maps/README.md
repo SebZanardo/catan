@@ -4,23 +4,23 @@ Custom designed for this project!
 `NOTE: Pre-launch the format may be changed`
   
 This file format was designed to be:
-* Human readable/editable --> although using map editor is recommended
-* Simply parsed in sequential order from top to bottom
-* Scalable to allow for small, medium and large custom maps
-* Customisability to allow for whacky games whilst obeying catan rules
+* Human readable and editable (however, using out map editor is recommended
+* Simple to parse in sequential order
+* Scalable to allow for small, medium and large custom games
+* Customisable to allow for interesting games whilst obeying catan rules
   
-Alongside the game we will supplying players with a level editor to create,
+Within the game we will supplying players with a level editor to create,
 modify and share custom maps in the `.catan` file format.
   
-This file documents the expected type of each piece of data in the `.catan`
-file format. We have also included the validity checks our map parser performs
-to ensure the supplied map is game ready.
+This file explains what data is contained within the `.catan` file format. We
+have also included the validity checks our file parser performs to ensure the
+supplied map is game ready.
 
 ## Comments
-Any line with first character as `#` is ignored by the parser
+Any line starting with `#` is ignored by the parser
 
 ## Recommended max player count
-### list(u8)
+### type: list(u8)
 Description:  
 Minimum player count (inclusive), maximum player count (inclusive)
 ```
@@ -33,9 +33,10 @@ Example:
 Validity checks:  
 * number of columns == 2
 * `min_players` <= `max_players`
+* `min_players` > 0
 
 ## Recommended victory points to win
-### u8
+### type: u8
 Description:  
 A count for how many victory points are needed for a player to win the game
 ```
@@ -47,9 +48,10 @@ Example:
 ```
 Validity checks:  
 * number of columns == 1
+* `points_to_win` >= 0
 
 ## Max building counts
-### list(u8)
+### type: list(u8)
 Description:  
 Specifies for each player the number of roads, settlements and cities they have
 available to place on the board.
@@ -62,9 +64,12 @@ Example:
 ```
 Validity checks:  
 * number of columns == 3
+* `max_roads` >= 0
+* `max_settlements` >= 0
+* `max_cities` >= 0
 
 ## Free starting placements count
-### list(u8)
+### type: list(u8)
 Description:  
 The number free starting placements per players get is described here. The
 second number is how many of their turns starting from the end they get
@@ -79,9 +84,10 @@ Example:
 Validity checks:  
 * number of columns == 2
 * `free_placements` >= `resources_for_last_turns`
+* `resources_for_last_turns` >= 0
 
 ## Free starting placements map
-### list(list(u8))
+### type: list(u8)
 Description:  
 Each free placement turn that the players get and what they can place. Roads
 are placed after settlements or cities and must be connected to one of the
@@ -104,7 +110,7 @@ Validity checks:
 * sum(`free_cities`) <= `max cities`
 
 ## Bank resources
-### list(u16)
+### type: list(u16)
 Description:  
 These are counts of how many of each resource are stored in the bank.
 ```
@@ -116,9 +122,10 @@ Example:
 ```
 Validity checks:  
 * number of columns == 5
+* each value >= 0
 
 ## Development cards
-### list(u16)
+### type: list(u16)
 Description:  
 These are the counts of how many of each development card are shuffled into the
 starting development card deck.
@@ -131,9 +138,10 @@ Example:
 ```
 Validity checks:  
 * number of columns == 5
+* each value >= 0
 
 ## Board dimensions
-### list(u8)
+### type: list(u8)
 Description:  
 All boards are stored in part as a 2D matrix to allow for ease of rendering and
 generating lookup tables for hex, edge and vertex mappings. 
@@ -150,7 +158,7 @@ Validity checks:
 * `height` > 0
 
 ## Hex type map
-### list(list(u8))
+### type: list(list(u8))
 Description:  
 For each hex on the board specify its type
 ```
@@ -177,7 +185,7 @@ Validity checks:
 * each value < 8
 
 ## Hex type pool
-### list(u8)
+### type: list(u8)
 Description:  
 The count of each hex type in the pool to assign to hexes on the board. All
 type specified hexes are removed from the pool first then remaining any hexes
@@ -192,16 +200,16 @@ Example:
 Validity checks:  
 * number of columns == 6
 * sum(all values) >= number of non-zero values in hex type map
-* value >= number of value in hex type map
+* each value >= number of value in hex type map
 
 ## Hex value map
-### list(list(u8))
+### type: list(list(u8))
 Description:  
 Same as the hex types but for hex values. Water tiles should always be 0. Any
 fixed deserts must be 0. Any set values are removed from pool first then any
 values are randomly picked from the remaining values.
 ```
-0       unrollable 
+0       unrollable
 1       random from hex value pool
 2-12    this is value of the hex (all possible rolls of 2 six sided dice)
 ```
@@ -220,7 +228,7 @@ Validity checks:
 * any water or fixed deserts must == 0
 
 ## Hex value pool
-### list(u8)
+### type: list(u8)
 Description:  
 The number of each hex value that can appear. 7 should be left to zero unless
 you want to collect resources before robber is activated for some maps. This
@@ -237,10 +245,10 @@ Example:
 Validity checks:  
 * number of columns == 12
 * sum(all values) >= number of non-zero in hex value map
-* value >= number of value in hex value map
+* each value >= number of value in hex value map
 
 ## Port type map
-### list(u8)
+### type: list(u8)
 Description:  
 The 
 ```
@@ -259,10 +267,10 @@ Example:
 Validity checks:  
 * each value < 7
 * sum(all values) >= number of non-zero in port type map
-* value >= number of value in port type map
+* each value >= number of value in port type map
 
 ## Port type pool
-### list(u8)
+### type: list(u8)
 Description:  
 The count of each port type in the pool to assign to ports on the board. All
 type specified ports are removed from the pool first then remaining any ports
@@ -277,10 +285,10 @@ Example:
 Validity checks:  
 * number of columns == 6
 * sum(all values) >= number of non-zero in port type map
-* value >= number of value in port type map
+* each value >= number of value in port type map
 
 ## Port vertices map
-### list(u16)
+### type: list(u16)
 Description:  
 This is a list of pairs for where all ports reside on the board. Each port
 must be connected to two vertices. The vertices are indexed using the grid
