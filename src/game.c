@@ -2,9 +2,7 @@
 
 DEFINE_SHUFFLE_FUNCTION(u8, game_player_order_shuffle, MAX_PLAYERS)
 
-void game_start(Game* game, GameType game_type) {
-    game->game_type = game_type;
-
+void game_start(Game* game) {
     game->player_turn = 0;
 
     for (int i = 0; i < game->player_count; i++) {
@@ -18,8 +16,8 @@ void game_start(Game* game, GameType game_type) {
     // Update player pointer so first player
     game_update_active_player(game);
 
-    board_setup(&game->board, game_type);
-    cards_setup(&game->cards, game_type);
+    board_setup(&game->board);
+    cards_setup(&game->cards);
 }
 
 bool game_setup_add_player(Game* game, PlayerColour colour, char name[16]) {

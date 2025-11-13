@@ -16,11 +16,9 @@ typedef struct {
 	Player* active_player;
 	u8 player_count;
 	u8 player_turn;
-
-	GameType game_type;
 } Game;
 
-void game_start(Game* game, GameType game_type);
+void game_start(Game* game);
 
 bool game_setup_add_player(Game* game, PlayerColour colour, char name[16]);
 bool game_setup_remove_player(Game* game, u8 index);

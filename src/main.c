@@ -20,7 +20,7 @@ int main(void) {
     SetWindowIcon(icon);
 
     Game game = {0};
-    game_start(&game, GAME_REGULAR);
+    game_start(&game);
 
     float hexagon_height = 90;
     float hexagon_width = hexagon_height * sqrt(3);

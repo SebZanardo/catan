@@ -5,7 +5,10 @@
 #include "board.h"
 #include "cards.h"
 
+
 #define MAX_PLAYER_NAME_LENGTH 16
+
+// TODO: These shouldn't be hardcoded constants, read from parsed map file
 #define MAX_PLAYER_ROADS 15
 #define MAX_PLAYER_SETTLEMENTS 5
 #define MAX_PLAYER_CITIES 4
@@ -29,6 +32,8 @@ typedef enum {
 } PlayerColour;
 
 typedef struct {
+	// TODO: Allocate these arrays on an Arena and store length in variable
+
 	// Bitmasked u8 of boolean values
 	// 0 --> Player turn?
 	// 0 --> Available edge

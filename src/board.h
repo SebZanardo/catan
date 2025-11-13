@@ -3,6 +3,7 @@
 
 #include "core.h"
 
+// TODO: These shouldn't be hardcoded constants, read from parsed map file
 #define MAX_BOARD_EDGES 109
 #define MAX_BOARD_VERTICES 80
 #define MAX_BOARD_HEXES 30
@@ -27,6 +28,7 @@ typedef enum {
 } Port;
 
 typedef struct {
+	// TODO: Allocate these arrays on an Arena and store length in variable
 	TerrainHex hexes[MAX_BOARD_HEXES];
 	u8 hex_values[MAX_BOARD_HEXES];  // Dice roll needed to collect
 	Port ports[MAX_BOARD_PORTS];
@@ -40,7 +42,7 @@ typedef struct {
 	u8 robber_moved_by;  // Store what player moved the robber last
 } Board;
 
-void board_setup(Board* board, GameType game_type);
+void board_setup(Board* board);
 void board_place_robber(Board* board, u8 tile_index, u8 player_index);
 
 #endif  /* BOARD_H */

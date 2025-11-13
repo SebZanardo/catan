@@ -51,9 +51,4 @@ typedef uint64_t u64;
 
 #define MAX_PLAYERS 6
 
-typedef enum {
-    GAME_REGULAR,    // 2-4 players
-    GAME_EXPANSION,  // 5-6 players
-} GameType;
-
 #endif  /* CORE_H */
